@@ -41,7 +41,7 @@ import java.sql.ResultSet;
 class AppTest {
     @Test void firstDipShouldWork() {
         try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stidb", "sti", "sti");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/iths", "root", "root");
             ResultSet rs = con.createStatement().executeQuery("Show tables");
             while (rs.next()) {
                 System.out.print(rs.getString(1));
