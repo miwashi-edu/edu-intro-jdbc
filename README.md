@@ -30,5 +30,34 @@ vi ./app/src/test/java/se/iths/AppTest.java
 ```
 
 ```java
+package se.iths;
 
+import org.junit.jupiter.api.Test;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class AppTest {
+    @Test void firstDipShouldWork() {
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/stidb", "sti", "sti");
+            ResultSet rs = con.createStatement().executeQuery("Show tables");
+            while (rs.next()) {
+                System.out.print(rs.getString(1));
+                System.out.println();
+            }
+        } catch (Throwable e){
+            System.out.println(e);
+        }
+    }
+}
+```
+
+## Låna kod
+
+```groovy
+implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.30'
 ```
