@@ -1,61 +1,57 @@
 # intro-jdbc
 
-## Skapa projekt
+> Den här lösningen är snabbast, då det bara blir en anslutning mot databasen och vi använder databasen till att slå ihop Artist och Album.
 
-```bash
-cd ~
-cd ws
-rm -rf edu-intro-jdbc #Försiktig med denna
-mkdir edu-intro-jdbc
-cd edu-intro-jdbc
-mkdir -p ./app/src/main/{java/se/iths,resources}
-mkdir -p ./app/src/test/{java/se/iths,resources}
-touch ./app/src/main/java/se/iths/App.java
-touch ./app/src/test/java/se/iths/AppTest.java
-touch ./app/build.gradle
-echo "# edu-intro-jdbc" > README.md
-echo "rootProject.name = 'edu-intro-jdbc'\ninclude('app')" > settings.gradle
-curl -L https://gist.github.com/miwashiab/987826fc0f2df3cd686a755f38a1c504/raw/build.gradle -o ./app/build.gradle
-curl -L https://gist.github.com/miwashiab/0ca40c177e62925e8dbb973229a4299d/raw/AppTest.java -o ./app/src/test/java/se/iths/AppTest.java
-curl -L https://gist.github.com/miwashiab/629757ac8e86e4caeab6835396be159b/raw/App.java -o ./app/src/main/java/se/iths/App.java
-echo ".idea\n.gradle\nbuild\n*.log" > .gitignore
-git init
-git add .
-git commit -m "Initial commit"
-```
-## AppTest.java
-
-```bash
-vi ./app/src/test/java/se/iths/AppTest.java
-```
+> Vi väljer återigen en enklare felhantering.
 
 ```java
-package se.iths;
+public class App {
 
-import org.junit.jupiter.api.Test;
+  private static final String JDBC_CONNECTION = "jdbc:mysql://localhost:3306/Chinook";
+  private static final String JDBC_USER = "iths";
+  private static final String JDBC_PASSWORD = "iths";
+  private static final String SQL_SELECT_ALL_ARTISTS_WITH_ALBUMS = "SELECT ArtistId, AlbumId, Name, Title FROM Artist JOIN Album USING (ArtistId) ORDER BY ArtistId";
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
+  private static final String SQL_COL_ARTIST_ID = "ArtistId";
+  private static final String SQL_COL_ARTIST_NAME = "Name";
+  private static final String SQL_COL_ALBUM_ID = "AlbumId";
+  private static final String SQL_COL_ALBUM_TITLE = "Title";
 
-class AppTest {
-    @Test void firstDipShouldWork() {
-        try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/iths", "root", "root");
-            ResultSet rs = con.createStatement().executeQuery("Show tables");
-            while (rs.next()) {
-                System.out.print(rs.getString(1));
-                System.out.println();
-            }
-        } catch (Throwable e){
-            System.out.println(e);
-        }
+  public static void main(String[] args)  {
+    App app = new App();
+    try {
+      app.load();
+    } catch (SQLException e) {
+      System.err.println(String.format("Något gick fel vid inläsning av databas! (%s)", e.toString()));
     }
+  }
+
+  private void load() throws SQLException {
+    Collection<Artist> artists = loadArtists();
+    for(Artist artist: artists){
+      System.out.println(artist);
+    }
+  }
+  private Collection<Artist>  loadArtists() throws SQLException {
+    Collection<Artist> artists = new ArrayList<>();
+    Connection con = con = DriverManager.getConnection(JDBC_CONNECTION, JDBC_USER, JDBC_PASSWORD);
+    ResultSet rs = con.createStatement().executeQuery(SQL_SELECT_ALL_ARTISTS_WITH_ALBUMS);
+    long oldId = -1;
+    Artist artist = null;
+    while(rs.next()){
+      long id = rs.getLong(SQL_COL_ARTIST_ID);
+      String name = rs.getString(SQL_COL_ARTIST_NAME);
+      long albumId = rs.getLong(SQL_COL_ALBUM_ID);
+      String title = rs.getString(SQL_COL_ALBUM_TITLE);
+      if(id!=oldId) {
+        artist = new Artist(id, name);
+        artists.add(artist);
+      }
+      artist.add(new Album(albumId, title));
+    }
+    rs.close();
+    con.close();
+    return artists;
+  }
 }
-```
-
-## Låna kod
-
-```groovy
-implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.30'
-```
+````
