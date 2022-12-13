@@ -56,7 +56,7 @@ public class App {
 
 ## Constants.java
 
-```
+```java
 package se.iths;
 
 public class Constants {
