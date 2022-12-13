@@ -32,6 +32,7 @@ public class App {
       System.out.println(artist);
     }
   }
+  
   private Collection<Artist>  loadArtists() throws SQLException {
     Collection<Artist> artists = new ArrayList<>();
     Connection con = con = DriverManager.getConnection(JDBC_CONNECTION, JDBC_USER, JDBC_PASSWORD);
