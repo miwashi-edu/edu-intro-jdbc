@@ -93,7 +93,7 @@ public class App {
 
 ### App.java + felhantering
 
-```
+```java
 public class App {
 
   private static final Collection<Artist> artists = new ArrayList<>();
