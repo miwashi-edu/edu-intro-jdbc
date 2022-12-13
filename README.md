@@ -3,17 +3,14 @@
 > Nu gör vi en något komplexare lösning. Detta gör man oftast om man vill att programmet fortsätter även om något går fel.
 
 ```java
-public class App {
+package se.iths;
 
-  private static final String JDBC_CONNECTION = "jdbc:mysql://localhost:3306/Chinook";
-  private static final String JDBC_USER = "iths";
-  private static final String JDBC_PASSWORD = "iths";
-  private static final String SQL_SELECT_ALL_ARTISTS = "SELECT ArtistId, Name FROM Artist";
-  private static final String SQL_SELECT_ALBUM_FOR_ARTISTS = "SELECT AlbumId, Title FROM Album WHERE ArtistId = ?";
-  private static final String SQL_COL_ARTIST_ID = "ArtistId";
-  private static final String SQL_COL_ARTIST_NAME = "Name";
-  private static final String SQL_COL_ALBUM_ID = "AlbumId";
-  private static final String SQL_COL_ALBUM_TITLE = "Title";
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import static se.iths.Constants.*;
+
+public class App {
   
   public static void main(String[] args)  {
       App app = new App();
