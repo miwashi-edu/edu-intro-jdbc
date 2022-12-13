@@ -5,17 +5,14 @@
 > Vi väljer återigen en enklare felhantering.
 
 ```java
+package se.iths;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import static se.iths.Constants.*;
+
 public class App {
-
-  private static final String JDBC_CONNECTION = "jdbc:mysql://localhost:3306/Chinook";
-  private static final String JDBC_USER = "iths";
-  private static final String JDBC_PASSWORD = "iths";
-  private static final String SQL_SELECT_ALL_ARTISTS_WITH_ALBUMS = "SELECT ArtistId, AlbumId, Name, Title FROM Artist JOIN Album USING (ArtistId) ORDER BY ArtistId";
-
-  private static final String SQL_COL_ARTIST_ID = "ArtistId";
-  private static final String SQL_COL_ARTIST_NAME = "Name";
-  private static final String SQL_COL_ALBUM_ID = "AlbumId";
-  private static final String SQL_COL_ALBUM_TITLE = "Title";
 
   public static void main(String[] args)  {
     App app = new App();
