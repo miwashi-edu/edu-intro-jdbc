@@ -79,7 +79,7 @@ public class App {
   
   private Collection<Artist>  loadArtists() throws SQLException {
     Collection<Artist> artists = new ArrayList<>();
-    Connection con = con = DriverManager.getConnection(JDBC_CONNECTION, JDBC_USER, JDBC_PASSWORD);
+    Connection con = DriverManager.getConnection(JDBC_CONNECTION, JDBC_USER, JDBC_PASSWORD);
     ResultSet rs = con.createStatement().executeQuery(SQL_SELECT_ALL_ARTISTS);
     while(rs.next()){
       long id = rs.getLong(SQL_COL_ARTIST_ID);
