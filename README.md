@@ -46,6 +46,7 @@ public class App {
       if(id!=oldId) {
         artist = new Artist(id, name);
         artists.add(artist);
+        oldId = id;
       }
       artist.add(new Album(albumId, title));
     }
