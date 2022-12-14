@@ -59,7 +59,7 @@ public class App {
     ResultSet rs = null;
     PreparedStatement stmt = null;
     try {
-      stmt = con.prepareStatement(SQL_SELECT_ALBUM_FOR_ARTISTS);
+      stmt = con.prepareStatement("SELECT AlbumId, Title FROM Album WHERE ArtistID = ?");
       stmt.setLong(1, artistId);//Sätt värde för första frågetecknet
       rs = stmt.executeQuery();
       while(rs.next()){
